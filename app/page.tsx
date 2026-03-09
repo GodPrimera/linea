@@ -205,6 +205,7 @@ export default async function HomePage() {
           )}
         </div>
       </div>
+      
 
       {/* ── NEWSLETTER ──────────────────────────────────────────────────── */}
       <div className="mx-auto max-w-6xl px-6 py-20">
