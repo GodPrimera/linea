@@ -133,14 +133,11 @@ export default function NotificationsClient({
 
   if (notifications.length === 0) {
     return (
-      <div className="py-24 text-center space-y-3">
-        <p className="font-display text-3xl font-light text-zinc-300 dark:text-zinc-700">
-          All caught up
-        </p>
-        <p className="text-sm text-zinc-400 dark:text-zinc-600">
-          No notifications yet. When someone comments, likes, or follows you, it will show up here.
-        </p>
-      </div>
+      <EmptyState
+        icon={<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2a6 6 0 00-6 6v3l-2 3h16l-2-3V8a6 6 0 00-6-6z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><path d="M8 15a2 2 0 004 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>}
+        title="All caught up"
+        description="When someone comments, likes, or follows you, it will show up here."
+      />
     );
   }
 
@@ -270,19 +267,11 @@ export default function NotificationsClient({
           })}
         </div>
       ) : (
-        <div className="py-16 text-center">
-          <p className="text-sm text-zinc-400 dark:text-zinc-600">
-            No {filter === "all" ? "" : filter} notifications
-          </p>
-          {filter !== "all" && (
-            <button
-              onClick={() => setFilter("all")}
-              className="mt-3 text-sm text-zinc-500 underline underline-offset-2 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors"
-            >
-              View all
-            </button>
-          )}
-        </div>
+        <EmptyState
+          icon={<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2a6 6 0 00-6 6v3l-2 3h16l-2-3V8a6 6 0 00-6-6z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><path d="M8 15a2 2 0 004 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>}
+          title={`No ${filter === "all" ? "" : filter + " "}notifications`}
+          description={filter !== "all" ? "Nothing here yet for this filter." : undefined}
+        />
       )}
 
     </div>

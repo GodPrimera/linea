@@ -31,9 +31,9 @@ export type PostCard = {
 // Helper: attach tags + like counts to a list of posts
 // ─────────────────────────────────────────────────────────────────────────────
 
-async function withTagsAndLikes(
-  rawPosts: Omit<PostCard, "tags" | "likeCount">[]
-): Promise<PostCard[]> {
+async function withTagsAndLikes<T extends Omit<PostCard, "tags" | "likeCount">>(
+  rawPosts: T[]
+): Promise<(T & { tags: { id: string; name: string; slug: string }[]; likeCount: number })[]> {
   if (rawPosts.length === 0) return [];
   const ids = rawPosts.map((p) => p.id);
 

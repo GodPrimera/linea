@@ -27,6 +27,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [userRole, setUserRole] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -36,10 +37,14 @@ export default function Navbar() {
 
   // Fetch unread notification count whenever route changes or user signs in
   useEffect(() => {
-    if (!isSignedIn) { setUnreadCount(0); return; }
+    if (!isSignedIn) { setUnreadCount(0); setUserRole(null); return; }
     fetch("/api/notifications/unread-count")
       .then((r) => r.json())
       .then((d) => setUnreadCount(d.count ?? 0))
+      .catch(() => {});
+    fetch("/api/me/role")
+      .then((r) => r.json())
+      .then((d) => setUserRole(d.role ?? null))
       .catch(() => {});
   }, [isSignedIn, pathname]);
 
@@ -199,9 +204,15 @@ export default function Navbar() {
                       {/* Nav links */}
                       <div className="py-1">
                         {[
+                          ...(userRole === "admin" ? [{ href: "/admin", label: "Admin panel", icon: (
+                            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 1l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></svg>
+                          )}] : []),
                           { href: "/dashboard", label: "Dashboard", icon: (
                             <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><rect x="9" y="1" width="6" height="6" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><rect x="1" y="9" width="6" height="6" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><rect x="9" y="9" width="6" height="6" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></svg>
                           )},
+                          ...(userRole === "reader" ? [{ href: "/apply", label: "Become an author", icon: (
+                            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 8l3 3 5-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          )}] : []),
                           { href: "/notifications", label: "Notifications", icon: (
                             <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 1a5 5 0 00-5 5v3l-1.5 2H14.5L13 9V6a5 5 0 00-5-5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><path d="M6.5 13a1.5 1.5 0 003 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
                           ), badge: unreadCount },

@@ -3,6 +3,8 @@
 import { useState, useMemo, useTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import EmptyState from "@/components/EmptyState";
+import EmptyState from "@/components/EmptyState";
 import { useRouter } from "next/navigation";
 import { removeBookmark } from "@/lib/actions/interactions";
 import type { PostCard } from "@/lib/queries/posts";
@@ -68,23 +70,12 @@ export default function BookmarksClient({
 
   if (bookmarks.length === 0) {
     return (
-      <div className="py-24 text-center space-y-4">
-        <p className="font-display text-3xl font-light text-zinc-300 dark:text-zinc-700">
-          No bookmarks yet
-        </p>
-        <p className="text-sm text-zinc-400 dark:text-zinc-600">
-          Save posts to read later by clicking the bookmark icon on any post.
-        </p>
-        <Link
-          href="/blog"
-          className="inline-flex items-center gap-2 text-sm text-zinc-900 dark:text-zinc-50 hover:opacity-60 transition-opacity pt-2"
-        >
-          Browse posts
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <path d="M1 6h10M6.5 1.5L11 6l-4.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </Link>
-      </div>
+      <EmptyState
+        icon={<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 3h12v15l-6-3.5L4 18V3z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+        title="No bookmarks yet"
+        description="Save posts to read later by clicking the bookmark icon on any post."
+        action={{ label: "Browse posts", href: "/blog" }}
+      />
     );
   }
 
@@ -216,16 +207,11 @@ export default function BookmarksClient({
           ))}
         </div>
       ) : (
-        <div className="py-16 text-center">
-          <p className="text-sm text-zinc-400 dark:text-zinc-600">
-            No bookmarks match your search
-          </p>
-          <button
-            onClick={() => setSearch("")}
-            className="mt-3 text-sm text-zinc-500 underline underline-offset-2 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors"
-          >
-            Clear filter
-          </button>
+        <EmptyState
+          icon={<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 3h12v15l-6-3.5L4 18V3z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+          title="No bookmarks match your search"
+          description="Try a different keyword or clear the filter."
+        />
         </div>
       )}
 

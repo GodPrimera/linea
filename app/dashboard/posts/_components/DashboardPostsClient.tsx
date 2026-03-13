@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
+import EmptyState from "@/components/EmptyState";
 import { deletePostAction } from "@/lib/actions/posts";
 import type { getAuthorPosts } from "@/lib/queries/dashboard";
 

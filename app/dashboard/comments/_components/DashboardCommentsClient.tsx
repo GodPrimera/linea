@@ -1,4 +1,5 @@
 "use client";
+import EmptyState from "@/components/EmptyState";
 
 import { useState, useMemo, useTransition } from "react";
 import Link from "next/link";

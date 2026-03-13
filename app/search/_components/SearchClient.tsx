@@ -1,4 +1,5 @@
 "use client";
+import EmptyState from "@/components/EmptyState";
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -307,10 +308,11 @@ export default function SearchClient() {
 
       {/* No results */}
       {showEmpty && (
-        <div className="py-16 text-center space-y-4">
-          <p className="font-display text-3xl font-light text-zinc-300 dark:text-zinc-700">No results found</p>
-          <p className="text-sm text-zinc-400 dark:text-zinc-600">Try a different search term</p>
-        </div>
+        <EmptyState
+          icon={<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" strokeWidth="1.5"/><path d="M13 13l4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>}
+          title={`No results for "${query}"`}
+          description="Try different keywords or check the spelling."
+        />
       )}
 
     </div>

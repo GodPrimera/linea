@@ -1,5 +1,5 @@
-import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/queries/users";
 import DashboardSidebar from "./_components/DashboardSidebar";
 
 export default async function DashboardLayout({
@@ -7,14 +7,14 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { userId } = await auth();
-  if (!userId) redirect("/sign-in");
+  const user = await getCurrentUser();
 
-  // Replace with real role check:
-  // const user = await db.query.users.findFirst({
-  //   where: (u, { eq }) => eq(u.clerkId, userId),
-  // });
-  // if (user?.role !== "author" && user?.role !== "admin") redirect("/");
+  if (!user) redirect("/sign-in");
+
+  // Only authors and admins can access the dashboard
+  if (user.role !== "author" && user.role !== "admin") {
+    redirect("/apply");
+  }
 
   return (
     <div className="flex min-h-screen bg-zinc-50 dark:bg-zinc-950">

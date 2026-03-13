@@ -943,3 +943,44 @@ export const auditLogs = pgTable("audit_logs", {
 
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AUTHOR APPLICATIONS
+// Readers submit applications to become authors.
+// Admin reviews and approves or rejects them.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const applicationStatusEnum = pgEnum("application_status", [
+  "pending",
+  "approved",
+  "rejected",
+]);
+
+export const authorApplications = pgTable("author_applications", {
+  id: uuid("id").primaryKey().defaultRandom(),
+
+  userId: uuid("user_id")
+    .references(() => users.id, { onDelete: "cascade" })
+    .notNull(),
+
+  // Why the user wants to become an author
+  reason: text("reason").notNull(),
+
+  // Writing samples or links
+  writingSamples: text("writing_samples"),
+
+  status: applicationStatusEnum("status").default("pending").notNull(),
+
+  // Admin who reviewed it
+  reviewedBy: uuid("reviewed_by").references(() => users.id, {
+    onDelete: "set null",
+  }),
+
+  reviewedAt: timestamp("reviewed_at"),
+
+  // Optional note from admin on rejection
+  reviewNote: text("review_note"),
+
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});

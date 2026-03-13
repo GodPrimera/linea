@@ -1,4 +1,5 @@
 "use client";
+import EmptyState from "@/components/EmptyState";
 
 import { useState, useMemo } from "react";
 import type { Subscriber } from "@/lib/queries/subscribers";
@@ -174,9 +175,11 @@ export default function DashboardSubscribersClient({
         </table>
 
         {filtered.length === 0 && (
-          <div className="py-12 text-center">
-            <p className="text-sm text-zinc-400 dark:text-zinc-600">No subscribers found</p>
-          </div>
+          <EmptyState
+            icon={<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="M3 17c0-3.3 3.1-6 7-6s7 2.7 7 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>}
+            title={filtered.length === 0 && initialSubscribers.length > 0 ? "No subscribers match your search" : "No subscribers yet"}
+            description="When readers subscribe to your newsletter, they'll appear here."
+          />
         )}
       </div>
 
